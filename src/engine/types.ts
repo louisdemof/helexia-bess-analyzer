@@ -146,9 +146,14 @@ export interface GridParams {
 }
 
 /* ── EMS Parameters (Tab 5) ────────────────────────────── */
+export type BESSMode = 'loadShifting' | 'peakShaving' | 'combined';
+
 export interface EMSParams {
-  loadShifting: boolean;            // default true
-  peakShaving: boolean;             // default false (Phase 2)
+  bessMode: BESSMode;               // default 'loadShifting'
+  loadShifting: boolean;            // default true (kept for backward compat)
+  peakShaving: boolean;             // default false
+  peakShavingTargetKW: number;      // target max demand (kW) — BESS discharges above this
+  peakShavingAutoTarget: boolean;   // auto-calculate target from demanda contratada
   gridCharging: boolean;            // default true
   chargeWindowHours: number;        // default 72
   solarCharging: boolean;           // default false (v2)
@@ -369,8 +374,11 @@ export const DEFAULT_GRID_PARAMS: GridParams = {
 };
 
 export const DEFAULT_EMS_PARAMS: EMSParams = {
+  bessMode: 'loadShifting',
   loadShifting: true,
   peakShaving: false,
+  peakShavingTargetKW: 0,
+  peakShavingAutoTarget: true,
   gridCharging: true,
   chargeWindowHours: 72,
   solarCharging: false,

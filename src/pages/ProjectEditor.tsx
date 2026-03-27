@@ -184,7 +184,7 @@ export default function ProjectEditor() {
           <GridParamsForm params={project.gridParams} onChange={handleGridChange} onIcmsChange={handleIcmsChange} />
         )}
         {activeTab === 'ems' && (
-          <EMSParamsForm params={project.emsParams} onChange={handleEMSChange} />
+          <EMSParamsForm params={project.emsParams} onChange={handleEMSChange} demandaContratadaKW={project.gridParams.demandaContratadaKW} />
         )}
         {activeTab === 'limits' && (
           <OptLimitsForm

@@ -163,48 +163,81 @@ export function runBESSSimulation(
       const month = monthFromHourFast(h);
 
       let netLoad = loadH;
+      const mode = ems.bessMode || (ems.loadShifting ? 'loadShifting' : ems.peakShaving ? 'peakShaving' : 'loadShifting');
+      const minSoC = usableKWh * limits.minSoCPct;
+      const targetSoC = usableKWh * limits.maxSoCPct;
 
-      if (isPonta && ems.loadShifting) {
-        // DISCHARGE during ponta
-        const discharge = Math.min(
-          loadH,                       // Can't discharge more than load
-          maxDischargePower,           // Power limit
-          soc,                         // Can't exceed available energy
-        );
-        soc -= discharge;
-        // Clamp SoC to minimum
-        if (soc < usableKWh * limits.minSoCPct) {
-          const clampedDischarge = discharge - (usableKWh * limits.minSoCPct - soc);
-          soc = usableKWh * limits.minSoCPct;
-          netLoad = loadH - Math.max(0, clampedDischarge);
-        } else {
-          netLoad = loadH - discharge;
+      // Peak shaving target: auto = demanda contratada, or manual value
+      const psTarget = ems.peakShavingAutoTarget
+        ? grid.demandaContratadaKW
+        : (ems.peakShavingTargetKW || grid.demandaContratadaKW);
+
+      let shouldDischarge = false;
+      let maxDischargeThisHour = maxDischargePower;
+
+      if (mode === 'loadShifting') {
+        // Discharge only during ponta hours
+        shouldDischarge = isPonta;
+        // Discharge as much as possible (up to full load)
+        maxDischargeThisHour = Math.min(loadH, maxDischargePower);
+      } else if (mode === 'peakShaving') {
+        // Discharge whenever load exceeds target (any hour, any day)
+        shouldDischarge = loadH > psTarget;
+        // Only shave the excess above the target
+        maxDischargeThisHour = Math.min(loadH - psTarget, maxDischargePower);
+      } else {
+        // Combined: load shifting during ponta + peak shaving always
+        if (isPonta) {
+          shouldDischarge = true;
+          maxDischargeThisHour = Math.min(loadH, maxDischargePower);
+        } else if (loadH > psTarget) {
+          shouldDischarge = true;
+          maxDischargeThisHour = Math.min(loadH - psTarget, maxDischargePower);
         }
-        monthDischargeKWh[month] += loadH - netLoad;
+      }
+
+      if (shouldDischarge && soc > minSoC) {
+        // DISCHARGE
+        const availableSoC = soc - minSoC;
+        const discharge = Math.min(maxDischargeThisHour, availableSoC);
+        soc -= discharge;
+        netLoad = loadH - discharge;
+        monthDischargeKWh[month] += discharge;
       } else if (ems.gridCharging) {
-        // CHARGE during off-peak (or any non-ponta if not restricted)
+        // CHARGE
         const canCharge = !limits.restrictChargingToOffPeak || !isPonta;
-        const targetSoC = usableKWh * limits.maxSoCPct;
         const socDeficit = targetSoC - soc;
 
-        if (canCharge && socDeficit > 0 && htPonta <= ems.chargeWindowHours) {
-          const chargeNeed = socDeficit / rte;
-          const hoursAvailable = Math.max(htPonta, 1);
+        // For peak shaving mode: charge anytime load is below target (more aggressive)
+        // For load shifting: charge within window before ponta
+        const shouldCharge = mode === 'peakShaving'
+          ? (canCharge && socDeficit > 0 && loadH < psTarget)
+          : (mode === 'combined')
+            ? (canCharge && socDeficit > 0 && (htPonta <= ems.chargeWindowHours || loadH < psTarget))
+            : (canCharge && socDeficit > 0 && htPonta <= ems.chargeWindowHours);
 
-          // Cap charging so total grid draw (load + charge) stays within
-          // demanda contratada + 5% tolerance (avoids ultrapassagem penalty)
-          const demandaLimit = grid.demandaContratadaKW * 1.05;
+        if (shouldCharge) {
+          const chargeNeed = socDeficit / rte;
+
+          // For peak shaving: max charge = target - load (keep grid draw at target)
+          // For load shifting: max charge = demanda contratada × 1.05 - load
+          const demandaLimit = mode === 'peakShaving'
+            ? psTarget
+            : grid.demandaContratadaKW * 1.05;
           const maxChargeForDemand = Math.max(0, demandaLimit - loadH);
 
+          const hoursAvailable = mode === 'peakShaving' ? 1 : Math.max(htPonta, 1);
           const charge = Math.min(
-            chargeNeed / hoursAvailable,  // Spread evenly
-            maxChargePower,                // C-rate power limit
-            socDeficit / rte,              // Don't overfill
-            maxChargeForDemand,            // Don't exceed demanda contratada + 5%
+            chargeNeed / hoursAvailable,
+            maxChargePower,
+            socDeficit / rte,
+            maxChargeForDemand,
           );
-          soc += charge * rte;
-          soc = Math.min(soc, targetSoC); // Clamp
-          netLoad = loadH + charge;        // Extra grid draw
+          if (charge > 0) {
+            soc += charge * rte;
+            soc = Math.min(soc, targetSoC);
+            netLoad = loadH + charge;
+          }
         }
       }
 
