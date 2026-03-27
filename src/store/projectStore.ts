@@ -20,6 +20,27 @@ import {
   deleteFolder as dbDeleteFolder,
 } from '../storage/projectDB.ts';
 
+/** Fill missing fields on projects loaded from IndexedDB with current defaults. */
+function migrateProject(p: BESSProject): BESSProject {
+  return {
+    ...p,
+    economicParams: { ...DEFAULT_ECONOMIC_PARAMS, ...p.economicParams },
+    batteryParams: {
+      ...DEFAULT_BATTERY_PARAMS,
+      ...p.batteryParams,
+      degradationTable: p.batteryParams?.degradationTable ?? [...DEFAULT_BATTERY_PARAMS.degradationTable],
+    },
+    gridParams: {
+      ...DEFAULT_GRID_PARAMS,
+      ...p.gridParams,
+      aclEnergyPriceTable: p.gridParams?.aclEnergyPriceTable ?? [...DEFAULT_GRID_PARAMS.aclEnergyPriceTable],
+    },
+    emsParams: { ...DEFAULT_EMS_PARAMS, ...p.emsParams },
+    optimizationLimits: { ...DEFAULT_OPT_LIMITS, ...p.optimizationLimits },
+    sizingParams: { ...DEFAULT_SIZING_PARAMS, ...p.sizingParams },
+  };
+}
+
 interface ProjectStore {
   // State
   projects: BESSProject[];
@@ -100,10 +121,11 @@ export const useProjectStore = create<ProjectStore>((set, get) => ({
   loading: true,
 
   hydrate: async () => {
-    const [projects, folders] = await Promise.all([
+    const [rawProjects, folders] = await Promise.all([
       getAllProjects(),
       getAllFolders(),
     ]);
+    const projects = rawProjects.map(migrateProject);
     set({ projects, folders, loading: false });
   },
 
@@ -148,7 +170,8 @@ export const useProjectStore = create<ProjectStore>((set, get) => ({
   },
 
   loadProject: async (id) => {
-    return getProject(id);
+    const project = await getProject(id);
+    return project ? migrateProject(project) : undefined;
   },
 
   setCurrentProject: (id) => {

@@ -217,7 +217,7 @@ export function runBESSSimulation(
             : (canCharge && socDeficit > 0 && htPonta <= ems.chargeWindowHours);
 
         if (shouldCharge) {
-          const chargeNeed = socDeficit / rte;
+          const chargeNeed = socDeficit;
 
           // For peak shaving: max charge = target - load (keep grid draw at target)
           // For load shifting: max charge = demanda contratada × 1.05 - load
@@ -230,7 +230,7 @@ export function runBESSSimulation(
           const charge = Math.min(
             chargeNeed / hoursAvailable,
             maxChargePower,
-            socDeficit / rte,
+            socDeficit,
             maxChargeForDemand,
           );
           if (charge > 0) {

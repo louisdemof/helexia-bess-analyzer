@@ -175,9 +175,10 @@ export function calcMonthlyInvoice(
   // ACL energy (Livre only)
   if (grid.clientType === 'livre') {
     const totalMWh = load.consumoPontaMWh + load.consumoFPMWh;
+    const table = grid.aclEnergyPriceTable ?? [];
     const aclPrice = grid.aclSamePrice
       ? grid.aclEnergyPriceRMWh
-      : (grid.aclEnergyPriceTable[yearIndex] ?? grid.aclEnergyPriceRMWh);
+      : (table[yearIndex] ?? grid.aclEnergyPriceRMWh);
     // ACL energia: ICMS generally applies at state rate
     aclEnergiaR = grossUp(totalMWh * aclPrice, icmsTE, pisTE, cofinsTE, icmsExempt, pcExempt);
     lines.push({ label: 'Energia ACL (Comercializadora)', valueR: aclEnergiaR });
