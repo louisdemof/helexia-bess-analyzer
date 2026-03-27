@@ -50,6 +50,11 @@ interface ANEELRecord {
 const ANEEL_RESOURCE_ID = 'fcf2906c-7c32-4b9b-a637-054e7a5234f4';
 const PROXY_BASE = '/api/aneel';
 const DIRECT_BASE = 'https://dadosabertos.aneel.gov.br/api/3/action';
+// Public CORS proxies for production (GitHub Pages can't proxy)
+// corsproxy.io blocks server-side but works from browser origins
+const CORS_PROXIES = [
+  'https://corsproxy.io/?',
+];
 const CACHE_PREFIX = 'bess-aneel-tariff-';
 const CACHE_MAX_AGE_MS = 24 * 60 * 60 * 1000; // 24 hours
 
@@ -259,10 +264,13 @@ export async function fetchGrupoATariffs(
   const sql = buildQuery(sigAgente, subgroup);
   const encodedSql = encodeURIComponent(sql);
 
-  // Try proxy first (dev), then direct (prod)
+  const directUrl = `${DIRECT_BASE}/datastore_search_sql?sql=${encodedSql}`;
+
+  // Build URL list: Vite proxy (dev) → CORS proxies (prod) → direct (if CORS enabled)
   const urls = [
     `${PROXY_BASE}/datastore_search_sql?sql=${encodedSql}`,
-    `${DIRECT_BASE}/datastore_search_sql?sql=${encodedSql}`,
+    ...CORS_PROXIES.map((proxy) => `${proxy}${encodeURIComponent(directUrl)}`),
+    directUrl,
   ];
 
   for (const url of urls) {
