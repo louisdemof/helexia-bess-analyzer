@@ -7,7 +7,11 @@ import { runBESSSimulation } from '../engine/bessSimulation.ts';
 import { computeEaaSResults, applyEaaSFeeToResults } from '../engine/eaasFinance.ts';
 import { buildLoadCurve8760 } from '../engine/loadCurve.ts';
 import { exportResultsToExcel } from '../engine/excel.ts';
-import { generateClientPDF } from '../engine/pdf.ts';
+// Lazy import PDF to avoid blocking initial render
+const generateClientPDF = async (...args: Parameters<typeof import('../engine/pdf.ts')['generateClientPDF']>) => {
+  const { generateClientPDF: fn } = await import('../engine/pdf.ts');
+  return fn(...args);
+};
 import type { BESSProject, BESSSimulationResult } from '../engine/types.ts';
 
 import KPICards from '../components/results/KPICards.tsx';
