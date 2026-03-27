@@ -3,6 +3,7 @@
 // 3-tier fallback: LocalStorage cache → live fetch → bundled JSON
 
 import { getDistributorById } from './distributors.ts';
+import bundledTariffData from './aneel-tariffs.json';
 
 /* ── Types ──────────────────────────────────────────────── */
 
@@ -261,15 +262,10 @@ export async function fetchGrupoATariffs(
   if (cached) return cached;
 
   // Tier 1.5: Bundled fallback (fast, works offline and on GitHub Pages)
-  // Try bundled data before attempting network requests
-  try {
-    const bundled = await loadBundledTariffs(sigAgente, subgroup);
-    if (bundled) {
-      saveToCache(bundled); // Cache it so next time it's instant
-      return bundled;
-    }
-  } catch {
-    // Continue to network fetch
+  const bundled = loadBundledTariffs(sigAgente, subgroup);
+  if (bundled) {
+    saveToCache(bundled);
+    return bundled;
   }
 
   // Tier 2: Live ANEEL API fetch
@@ -302,13 +298,9 @@ export async function fetchGrupoATariffs(
     }
   }
 
-  // Tier 3: Bundled fallback JSON
-  try {
-    const fallback = await loadBundledTariffs(sigAgente, subgroup);
-    if (fallback) return fallback;
-  } catch {
-    // No bundled data available
-  }
+  // Tier 3: Bundled fallback JSON (already tried in 1.5, but retry in case)
+  const fallback = loadBundledTariffs(sigAgente, subgroup);
+  if (fallback) return fallback;
 
   // All tiers failed
   return {
@@ -328,20 +320,12 @@ export async function fetchGrupoATariffs(
 
 /* ── Bundled fallback ───────────────────────────────────── */
 
-let bundledData: Record<string, GrupoATariffs> | null = null;
+const bundledData = bundledTariffData as Record<string, GrupoATariffs>;
 
-async function loadBundledTariffs(
+function loadBundledTariffs(
   sigAgente: string,
   subgroup: string,
-): Promise<GrupoATariffs | null> {
-  if (!bundledData) {
-    try {
-      const mod = await import('./aneel-tariffs.json');
-      bundledData = (mod.default ?? mod) as Record<string, GrupoATariffs>;
-    } catch {
-      return null;
-    }
-  }
+): GrupoATariffs | null {
   const key = `${sigAgente}-${subgroup}`;
   return bundledData[key] ?? null;
 }
