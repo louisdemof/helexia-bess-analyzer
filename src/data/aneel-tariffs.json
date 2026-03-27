@@ -2,7 +2,7 @@
   "AME-A4": {
     "sigAgente": "AME",
     "subgroup": "A4",
-    "fetchedAt": "2026-03-27T05:47:04.317Z",
+    "fetchedAt": "2026-03-27T05:51:49.920Z",
     "vigencia": "2026-01-01",
     "verde_TUSD_Demanda": 22.96,
     "verde_TUSD_Ponta": 1199.71,
@@ -21,7 +21,7 @@
   "EQUATORIAL PA-A4": {
     "sigAgente": "EQUATORIAL PA",
     "subgroup": "A4",
-    "fetchedAt": "2026-03-27T05:47:05.758Z",
+    "fetchedAt": "2026-03-27T05:51:51.346Z",
     "vigencia": "2026-01-01",
     "verde_TUSD_Demanda": 44.81,
     "verde_TUSD_Ponta": 2582.58,
@@ -40,7 +40,7 @@
   "EQUATORIAL PA-A3a": {
     "sigAgente": "EQUATORIAL PA",
     "subgroup": "A3a",
-    "fetchedAt": "2026-03-27T05:47:06.225Z",
+    "fetchedAt": "2026-03-27T05:51:51.748Z",
     "vigencia": "2026-01-01",
     "verde_TUSD_Demanda": 44.81,
     "verde_TUSD_Ponta": 2582.58,
@@ -59,7 +59,7 @@
   "EQUATORIAL MA-A4": {
     "sigAgente": "EQUATORIAL MA",
     "subgroup": "A4",
-    "fetchedAt": "2026-03-27T05:47:07.270Z",
+    "fetchedAt": "2026-03-27T05:51:52.713Z",
     "vigencia": "2026-01-01",
     "verde_TUSD_Demanda": 31.98,
     "verde_TUSD_Ponta": 2377.47,
@@ -78,7 +78,7 @@
   "EQUATORIAL MA-A3a": {
     "sigAgente": "EQUATORIAL MA",
     "subgroup": "A3a",
-    "fetchedAt": "2026-03-27T05:47:07.618Z",
+    "fetchedAt": "2026-03-27T05:51:53.079Z",
     "vigencia": "2026-01-01",
     "verde_TUSD_Demanda": 31.98,
     "verde_TUSD_Ponta": 2377.47,
@@ -97,7 +97,7 @@
   "ETO-A4": {
     "sigAgente": "ETO",
     "subgroup": "A4",
-    "fetchedAt": "2026-03-27T05:47:08.736Z",
+    "fetchedAt": "2026-03-27T05:51:54.111Z",
     "vigencia": "2026-01-01",
     "verde_TUSD_Demanda": 52.73,
     "verde_TUSD_Ponta": 2038.01,
@@ -116,7 +116,7 @@
   "ETO-A3a": {
     "sigAgente": "ETO",
     "subgroup": "A3a",
-    "fetchedAt": "2026-03-27T05:47:09.097Z",
+    "fetchedAt": "2026-03-27T05:51:54.591Z",
     "vigencia": "2026-01-01",
     "verde_TUSD_Demanda": 52.73,
     "verde_TUSD_Ponta": 2038.01,
@@ -135,7 +135,7 @@
   "EQUATORIAL PI-A4": {
     "sigAgente": "EQUATORIAL PI",
     "subgroup": "A4",
-    "fetchedAt": "2026-03-27T05:47:10.107Z",
+    "fetchedAt": "2026-03-27T05:51:55.643Z",
     "vigencia": "2026-01-01",
     "verde_TUSD_Demanda": 32.5,
     "verde_TUSD_Ponta": 2296.63,
@@ -154,7 +154,7 @@
   "EQUATORIAL PI-A3a": {
     "sigAgente": "EQUATORIAL PI",
     "subgroup": "A3a",
-    "fetchedAt": "2026-03-27T05:47:10.477Z",
+    "fetchedAt": "2026-03-27T05:51:55.969Z",
     "vigencia": "2026-01-01",
     "verde_TUSD_Demanda": 32.5,
     "verde_TUSD_Ponta": 2296.63,
@@ -173,7 +173,7 @@
   "ENEL CE-A4": {
     "sigAgente": "ENEL CE",
     "subgroup": "A4",
-    "fetchedAt": "2026-03-27T05:47:11.526Z",
+    "fetchedAt": "2026-03-27T05:51:57.055Z",
     "vigencia": "2026-01-01",
     "verde_TUSD_Demanda": 22.1,
     "verde_TUSD_Ponta": 1162.9,
@@ -192,7 +192,7 @@
   "COSERN-A4": {
     "sigAgente": "COSERN",
     "subgroup": "A4",
-    "fetchedAt": "2026-03-27T05:47:13.102Z",
+    "fetchedAt": "2026-03-27T05:51:58.452Z",
     "vigencia": "2026-01-01",
     "verde_TUSD_Demanda": 28.73,
     "verde_TUSD_Ponta": 1867.81,
@@ -211,7 +211,7 @@
   "EPB-A4": {
     "sigAgente": "EPB",
     "subgroup": "A4",
-    "fetchedAt": "2026-03-27T05:47:14.505Z",
+    "fetchedAt": "2026-03-27T05:51:59.865Z",
     "vigencia": "2026-01-01",
     "verde_TUSD_Demanda": 24.42,
     "verde_TUSD_Ponta": 1263.03,
@@ -230,7 +230,7 @@
   "Neoenergia PE-A4": {
     "sigAgente": "Neoenergia PE",
     "subgroup": "A4",
-    "fetchedAt": "2026-03-27T05:47:15.747Z",
+    "fetchedAt": "2026-03-27T05:52:01.218Z",
     "vigencia": "2026-01-01",
     "verde_TUSD_Demanda": 21.39,
     "verde_TUSD_Ponta": 1244.41,
@@ -249,7 +249,7 @@
   "EQUATORIAL AL-A4": {
     "sigAgente": "EQUATORIAL AL",
     "subgroup": "A4",
-    "fetchedAt": "2026-03-27T05:47:17.107Z",
+    "fetchedAt": "2026-03-27T05:52:02.715Z",
     "vigencia": "2026-01-01",
     "verde_TUSD_Demanda": 25.2,
     "verde_TUSD_Ponta": 1841.93,
@@ -268,7 +268,7 @@
   "ESE-A4": {
     "sigAgente": "ESE",
     "subgroup": "A4",
-    "fetchedAt": "2026-03-27T05:47:18.469Z",
+    "fetchedAt": "2026-03-27T05:52:04.027Z",
     "vigencia": "2026-01-01",
     "verde_TUSD_Demanda": 23.81,
     "verde_TUSD_Ponta": 1702.94,
@@ -287,7 +287,7 @@
   "COELBA-A4": {
     "sigAgente": "COELBA",
     "subgroup": "A4",
-    "fetchedAt": "2026-03-27T05:47:19.750Z",
+    "fetchedAt": "2026-03-27T05:52:05.466Z",
     "vigencia": "2026-01-01",
     "verde_TUSD_Demanda": 38.61,
     "verde_TUSD_Ponta": 2676.04,
@@ -306,7 +306,7 @@
   "COELBA-A3a": {
     "sigAgente": "COELBA",
     "subgroup": "A3a",
-    "fetchedAt": "2026-03-27T05:47:20.077Z",
+    "fetchedAt": "2026-03-27T05:52:05.792Z",
     "vigencia": "2026-01-01",
     "verde_TUSD_Demanda": 38.61,
     "verde_TUSD_Ponta": 2676.04,
@@ -325,7 +325,7 @@
   "CEMIG-D-A4": {
     "sigAgente": "CEMIG-D",
     "subgroup": "A4",
-    "fetchedAt": "2026-03-27T05:47:21.202Z",
+    "fetchedAt": "2026-03-27T05:52:06.873Z",
     "vigencia": "2026-01-01",
     "verde_TUSD_Demanda": 22.81,
     "verde_TUSD_Ponta": 1809.05,
@@ -344,7 +344,7 @@
   "CEMIG-D-A3a": {
     "sigAgente": "CEMIG-D",
     "subgroup": "A3a",
-    "fetchedAt": "2026-03-27T05:47:21.483Z",
+    "fetchedAt": "2026-03-27T05:52:07.211Z",
     "vigencia": "2026-01-01",
     "verde_TUSD_Demanda": 22.81,
     "verde_TUSD_Ponta": 1809.05,
@@ -363,7 +363,7 @@
   "ENEL RJ-A4": {
     "sigAgente": "ENEL RJ",
     "subgroup": "A4",
-    "fetchedAt": "2026-03-27T05:47:22.686Z",
+    "fetchedAt": "2026-03-27T05:52:08.300Z",
     "vigencia": "2026-03-15",
     "verde_TUSD_Demanda": 38.75,
     "verde_TUSD_Ponta": 2057.29,
@@ -382,7 +382,7 @@
   "ENEL RJ-A3a": {
     "sigAgente": "ENEL RJ",
     "subgroup": "A3a",
-    "fetchedAt": "2026-03-27T05:47:23.086Z",
+    "fetchedAt": "2026-03-27T05:52:08.816Z",
     "vigencia": "2026-03-15",
     "verde_TUSD_Demanda": 38.75,
     "verde_TUSD_Ponta": 2057.29,
@@ -401,7 +401,7 @@
   "LIGHT SESA-A4": {
     "sigAgente": "LIGHT SESA",
     "subgroup": "A4",
-    "fetchedAt": "2026-03-27T05:47:24.114Z",
+    "fetchedAt": "2026-03-27T05:52:09.962Z",
     "vigencia": "2026-03-15",
     "verde_TUSD_Demanda": 28.05,
     "verde_TUSD_Ponta": 1176.32,
@@ -420,7 +420,7 @@
   "LIGHT SESA-A3a": {
     "sigAgente": "LIGHT SESA",
     "subgroup": "A3a",
-    "fetchedAt": "2026-03-27T05:47:24.446Z",
+    "fetchedAt": "2026-03-27T05:52:10.354Z",
     "vigencia": "2017-04-01",
     "verde_TUSD_Demanda": 15.76,
     "verde_TUSD_Ponta": 790.61,
@@ -439,7 +439,7 @@
   "ELETROPAULO-A4": {
     "sigAgente": "ELETROPAULO",
     "subgroup": "A4",
-    "fetchedAt": "2026-03-27T05:47:25.516Z",
+    "fetchedAt": "2026-03-27T05:52:11.455Z",
     "vigencia": "2026-01-01",
     "verde_TUSD_Demanda": 17.04,
     "verde_TUSD_Ponta": 837.07,
@@ -458,7 +458,7 @@
   "ELETROPAULO-A3a": {
     "sigAgente": "ELETROPAULO",
     "subgroup": "A3a",
-    "fetchedAt": "2026-03-27T05:47:26.011Z",
+    "fetchedAt": "2026-03-27T05:52:11.783Z",
     "vigencia": "2026-01-01",
     "verde_TUSD_Demanda": 17.04,
     "verde_TUSD_Ponta": 837.07,
@@ -477,7 +477,7 @@
   "CPFL-PAULISTA-A4": {
     "sigAgente": "CPFL-PAULISTA",
     "subgroup": "A4",
-    "fetchedAt": "2026-03-27T05:47:26.971Z",
+    "fetchedAt": "2026-03-27T05:52:12.775Z",
     "vigencia": "2026-01-01",
     "verde_TUSD_Demanda": 15.93,
     "verde_TUSD_Ponta": 1294.59,
@@ -485,7 +485,7 @@
     "verde_TE_Ponta": 444.54,
     "verde_TE_FP": 271.19,
     "azul_TUSD_Dem_Ponta": 48.61,
-    "azul_TUSD_Dem_FP": 15.93,
+    "azul_TUSD_Dem_FP": 0,
     "azul_TUSD_Ponta": 114.47,
     "azul_TUSD_FP": 114.47,
     "azul_TE_Ponta": 444.54,
@@ -496,7 +496,7 @@
   "CPFL-PAULISTA-A3a": {
     "sigAgente": "CPFL-PAULISTA",
     "subgroup": "A3a",
-    "fetchedAt": "2026-03-27T05:47:27.428Z",
+    "fetchedAt": "2026-03-27T05:52:13.102Z",
     "vigencia": "2026-01-01",
     "verde_TUSD_Demanda": 15.93,
     "verde_TUSD_Ponta": 1294.59,
@@ -512,29 +512,10 @@
     "partial": false,
     "warnings": []
   },
-  "ELEKTRO-A4": {
-    "sigAgente": "ELEKTRO",
-    "subgroup": "A4",
-    "fetchedAt": "2026-03-27T05:47:28.430Z",
-    "vigencia": "2026-01-01",
-    "verde_TUSD_Demanda": 28.61,
-    "verde_TUSD_Ponta": 1923.09,
-    "verde_TUSD_FP": 138.52,
-    "verde_TE_Ponta": 480.04,
-    "verde_TE_FP": 297.32,
-    "azul_TUSD_Dem_Ponta": 73.39,
-    "azul_TUSD_Dem_FP": 28.61,
-    "azul_TUSD_Ponta": 138.52,
-    "azul_TUSD_FP": 0,
-    "azul_TE_Ponta": 480.04,
-    "azul_TE_FP": 0,
-    "partial": false,
-    "warnings": []
-  },
   "ELEKTRO-A3a": {
     "sigAgente": "ELEKTRO",
     "subgroup": "A3a",
-    "fetchedAt": "2026-03-27T05:47:28.863Z",
+    "fetchedAt": "2026-03-27T05:52:14.547Z",
     "vigencia": "2026-01-01",
     "verde_TUSD_Demanda": 28.61,
     "verde_TUSD_Ponta": 1923.09,
@@ -553,7 +534,7 @@
   "EDP SP-A4": {
     "sigAgente": "EDP SP",
     "subgroup": "A4",
-    "fetchedAt": "2026-03-27T05:47:30.051Z",
+    "fetchedAt": "2026-03-27T05:52:15.786Z",
     "vigencia": "2026-01-01",
     "verde_TUSD_Demanda": 12.02,
     "verde_TUSD_Ponta": 1325.63,
@@ -572,7 +553,7 @@
   "EDP SP-A3a": {
     "sigAgente": "EDP SP",
     "subgroup": "A3a",
-    "fetchedAt": "2026-03-27T05:47:30.401Z",
+    "fetchedAt": "2026-03-27T05:52:16.160Z",
     "vigencia": "2026-01-01",
     "verde_TUSD_Demanda": 12.02,
     "verde_TUSD_Ponta": 1325.63,
@@ -591,7 +572,7 @@
   "EDP ES-A4": {
     "sigAgente": "EDP ES",
     "subgroup": "A4",
-    "fetchedAt": "2026-03-27T05:47:31.419Z",
+    "fetchedAt": "2026-03-27T05:52:17.361Z",
     "vigencia": "2026-01-01",
     "verde_TUSD_Demanda": 31.93,
     "verde_TUSD_Ponta": 1321.93,
@@ -610,7 +591,7 @@
   "EDP ES-A3a": {
     "sigAgente": "EDP ES",
     "subgroup": "A3a",
-    "fetchedAt": "2026-03-27T05:47:31.776Z",
+    "fetchedAt": "2026-03-27T05:52:17.737Z",
     "vigencia": "2026-01-01",
     "verde_TUSD_Demanda": 31.93,
     "verde_TUSD_Ponta": 1321.93,
@@ -629,7 +610,7 @@
   "EQUATORIAL GO-A4": {
     "sigAgente": "EQUATORIAL GO",
     "subgroup": "A4",
-    "fetchedAt": "2026-03-27T05:47:32.726Z",
+    "fetchedAt": "2026-03-27T05:52:18.777Z",
     "vigencia": "2026-01-01",
     "verde_TUSD_Demanda": 26.08,
     "verde_TUSD_Ponta": 1656.16,
@@ -648,7 +629,7 @@
   "EQUATORIAL GO-A3a": {
     "sigAgente": "EQUATORIAL GO",
     "subgroup": "A3a",
-    "fetchedAt": "2026-03-27T05:47:33.048Z",
+    "fetchedAt": "2026-03-27T05:52:19.141Z",
     "vigencia": "2026-01-01",
     "verde_TUSD_Demanda": 26.08,
     "verde_TUSD_Ponta": 1656.16,
@@ -667,7 +648,7 @@
   "Neoenergia Brasília-A4": {
     "sigAgente": "Neoenergia Brasília",
     "subgroup": "A4",
-    "fetchedAt": "2026-03-27T05:47:34.111Z",
+    "fetchedAt": "2026-03-27T05:52:20.584Z",
     "vigencia": "2026-01-01",
     "verde_TUSD_Demanda": 13.1,
     "verde_TUSD_Ponta": 927.52,
@@ -686,7 +667,7 @@
   "Neoenergia Brasília-A3a": {
     "sigAgente": "Neoenergia Brasília",
     "subgroup": "A3a",
-    "fetchedAt": "2026-03-27T05:47:34.616Z",
+    "fetchedAt": "2026-03-27T05:52:21.037Z",
     "vigencia": "2026-01-01",
     "verde_TUSD_Demanda": 13.1,
     "verde_TUSD_Ponta": 927.52,
@@ -705,7 +686,7 @@
   "EMS-A4": {
     "sigAgente": "EMS",
     "subgroup": "A4",
-    "fetchedAt": "2026-03-27T05:47:35.681Z",
+    "fetchedAt": "2026-03-27T05:52:22.223Z",
     "vigencia": "2026-01-01",
     "verde_TUSD_Demanda": 34.69,
     "verde_TUSD_Ponta": 1809.93,
@@ -724,7 +705,7 @@
   "EMS-A3a": {
     "sigAgente": "EMS",
     "subgroup": "A3a",
-    "fetchedAt": "2026-03-27T05:47:36.112Z",
+    "fetchedAt": "2026-03-27T05:52:22.649Z",
     "vigencia": "2026-01-01",
     "verde_TUSD_Demanda": 34.69,
     "verde_TUSD_Ponta": 1809.93,
@@ -743,7 +724,7 @@
   "EMT-A4": {
     "sigAgente": "EMT",
     "subgroup": "A4",
-    "fetchedAt": "2026-03-27T05:47:37.214Z",
+    "fetchedAt": "2026-03-27T05:52:23.950Z",
     "vigencia": "2026-01-01",
     "verde_TUSD_Demanda": 32.74,
     "verde_TUSD_Ponta": 1713.29,
@@ -762,7 +743,7 @@
   "EMT-A3a": {
     "sigAgente": "EMT",
     "subgroup": "A3a",
-    "fetchedAt": "2026-03-27T05:47:37.687Z",
+    "fetchedAt": "2026-03-27T05:52:24.370Z",
     "vigencia": "2026-01-01",
     "verde_TUSD_Demanda": 32.74,
     "verde_TUSD_Ponta": 1713.29,
@@ -781,26 +762,45 @@
   "COPEL-DIS-A4": {
     "sigAgente": "COPEL-DIS",
     "subgroup": "A4",
-    "fetchedAt": "2026-03-27T05:47:38.788Z",
+    "fetchedAt": "2026-03-27T05:52:25.654Z",
     "vigencia": "2026-01-01",
     "verde_TUSD_Demanda": 20.78,
-    "verde_TUSD_Ponta": 1293.48,
+    "verde_TUSD_Ponta": 1211.56,
     "verde_TUSD_FP": 120.91,
-    "verde_TE_Ponta": 472.68,
+    "verde_TE_Ponta": 413.69,
     "verde_TE_FP": 257.51,
-    "azul_TUSD_Dem_Ponta": 0,
+    "azul_TUSD_Dem_Ponta": 44.93,
     "azul_TUSD_Dem_FP": 0,
-    "azul_TUSD_Ponta": 0,
+    "azul_TUSD_Ponta": 120.91,
     "azul_TUSD_FP": 120.91,
-    "azul_TE_Ponta": 0,
+    "azul_TE_Ponta": 413.69,
     "azul_TE_FP": 257.51,
+    "partial": false,
+    "warnings": []
+  },
+  "COPEL-DIS-A3a": {
+    "sigAgente": "COPEL-DIS",
+    "subgroup": "A3a",
+    "fetchedAt": "2026-03-27T05:52:26.181Z",
+    "vigencia": "2026-01-01",
+    "verde_TUSD_Demanda": 20.78,
+    "verde_TUSD_Ponta": 1211.56,
+    "verde_TUSD_FP": 0,
+    "verde_TE_Ponta": 413.69,
+    "verde_TE_FP": 0,
+    "azul_TUSD_Dem_Ponta": 44.93,
+    "azul_TUSD_Dem_FP": 0,
+    "azul_TUSD_Ponta": 120.91,
+    "azul_TUSD_FP": 0,
+    "azul_TE_Ponta": 413.69,
+    "azul_TE_FP": 0,
     "partial": false,
     "warnings": []
   },
   "CELESC-A3a": {
     "sigAgente": "CELESC",
     "subgroup": "A3a",
-    "fetchedAt": "2026-03-27T05:47:41.043Z",
+    "fetchedAt": "2026-03-27T05:52:28.148Z",
     "vigencia": "2026-01-01",
     "verde_TUSD_Demanda": 18.09,
     "verde_TUSD_Ponta": 1069.41,
@@ -819,7 +819,7 @@
   "RGE SUL-A4": {
     "sigAgente": "RGE SUL",
     "subgroup": "A4",
-    "fetchedAt": "2026-03-27T05:47:42.134Z",
+    "fetchedAt": "2026-03-27T05:52:29.194Z",
     "vigencia": "2019-04-19",
     "verde_TUSD_Demanda": 21.67,
     "verde_TUSD_Ponta": 840.36,

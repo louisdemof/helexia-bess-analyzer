@@ -260,6 +260,18 @@ export async function fetchGrupoATariffs(
   const cached = getFromCache(sigAgente, subgroup);
   if (cached) return cached;
 
+  // Tier 1.5: Bundled fallback (fast, works offline and on GitHub Pages)
+  // Try bundled data before attempting network requests
+  try {
+    const bundled = await loadBundledTariffs(sigAgente, subgroup);
+    if (bundled) {
+      saveToCache(bundled); // Cache it so next time it's instant
+      return bundled;
+    }
+  } catch {
+    // Continue to network fetch
+  }
+
   // Tier 2: Live ANEEL API fetch
   const sql = buildQuery(sigAgente, subgroup);
   const encodedSql = encodeURIComponent(sql);
@@ -267,9 +279,10 @@ export async function fetchGrupoATariffs(
   const directUrl = `${DIRECT_BASE}/datastore_search_sql?sql=${encodedSql}`;
 
   // Build URL list: Vite proxy (dev) → CORS proxies (prod) → direct (if CORS enabled)
+  // Note: corsproxy.io takes the raw URL after ?, no double-encoding
   const urls = [
     `${PROXY_BASE}/datastore_search_sql?sql=${encodedSql}`,
-    ...CORS_PROXIES.map((proxy) => `${proxy}${encodeURIComponent(directUrl)}`),
+    ...CORS_PROXIES.map((proxy) => `${proxy}${directUrl}`),
     directUrl,
   ];
 
