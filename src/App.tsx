@@ -18,7 +18,7 @@ export default function App() {
   }, [hydrate]);
 
   return (
-    <BrowserRouter basename="/bess-analyzer">
+    <BrowserRouter basename="/helexia-bess-analyzer">
       <div className="flex h-screen overflow-hidden">
         <Sidebar />
         <div className="flex flex-1 flex-col overflow-hidden">

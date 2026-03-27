@@ -3,7 +3,7 @@ import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 
 export default defineConfig({
-  base: '/bess-analyzer/',
+  base: '/helexia-bess-analyzer/',
   plugins: [
     react(),
     tailwindcss(),
