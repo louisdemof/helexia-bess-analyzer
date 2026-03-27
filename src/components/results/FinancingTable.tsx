@@ -1,20 +1,26 @@
 // src/components/results/FinancingTable.tsx
 // Separate box for external financing impact — only shows when financing is enabled
-import type { EaaSResult, EconomicParams } from '../../engine/types.ts';
+import type { EaaSResult, EconomicParams, BatteryParams, SizingParams } from '../../engine/types.ts';
+import { calcTotalCapex } from '../../engine/eaasFinance.ts';
 
 interface Props {
   results: EaaSResult[];
   grossSavingsYr1: number;
   econ: EconomicParams;
+  battery: BatteryParams;
+  sizing: SizingParams;
 }
 
 function fmtR(v: number): string {
   return 'R$ ' + Math.round(v).toLocaleString('pt-BR');
 }
 
-export default function FinancingTable({ results, grossSavingsYr1, econ }: Props) {
+export default function FinancingTable({ results, grossSavingsYr1, econ, battery, sizing }: Props) {
   if (!econ.financingEnabled || results.length === 0) return null;
 
+  const totalCapex = calcTotalCapex(econ, battery, sizing);
+  const debtAmount = totalCapex * econ.financingPctCapex;
+  const equityAmount = totalCapex - debtAmount;
   const debtPct = (econ.financingPctCapex * 100).toFixed(0);
   const rate = (econ.financingRate * 100).toFixed(1);
   const term = econ.financingTermYears;
@@ -26,6 +32,23 @@ export default function FinancingTable({ results, grossSavingsYr1, econ }: Props
         <span className="rounded-full bg-[#8b5cf6]/20 px-3 py-1 text-xs text-[#8b5cf6]">
           {debtPct}% financiado a {rate}% a.a. — {term} anos
         </span>
+      </div>
+
+      {/* CAPEX breakdown */}
+      <div className="mb-4 grid grid-cols-3 gap-3">
+        <div className="rounded-lg bg-[#1A2332] p-3">
+          <p className="text-xs text-[#6692A8]">CAPEX Total</p>
+          <p className="text-base font-semibold text-white">{fmtR(totalCapex)}</p>
+        </div>
+        <div className="rounded-lg bg-[#1A2332] p-3">
+          <p className="text-xs text-[#6692A8]">Equity Helexia ({(100 - Number(debtPct))}%)</p>
+          <p className="text-base font-semibold text-[#8b5cf6]">{fmtR(equityAmount)}</p>
+        </div>
+        <div className="rounded-lg bg-[#1A2332] p-3">
+          <p className="text-xs text-[#6692A8]">Financiamento ({debtPct}%)</p>
+          <p className="text-base font-semibold text-white">{fmtR(debtAmount)}</p>
+          <p className="text-[10px] text-[#6692A8]">{rate}% a.a. — {term} anos</p>
+        </div>
       </div>
 
       <div className="overflow-x-auto">

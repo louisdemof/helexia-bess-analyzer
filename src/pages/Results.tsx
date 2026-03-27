@@ -279,6 +279,8 @@ export default function Results() {
               results={simResult.eaasResults}
               grossSavingsYr1={simResult.grossSavingsYr1}
               econ={fullProject.economicParams}
+              battery={fullProject.batteryParams}
+              sizing={fullProject.sizingParams}
             />
           )}
 
