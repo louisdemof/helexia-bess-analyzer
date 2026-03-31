@@ -79,7 +79,8 @@ function addHourlyFlowSheet(
   const rows: (string | number)[][] = [headers];
   const netLoad = sim.hourlyNetLoad ?? [];
   const soc = sim.hourlySoC ?? [];
-  const usableKWh = battery.capacityKWh * battery.dodPct;
+  // Normalize SoC% against nominal capacity (not usable) so DoD impact is visible
+  const nominalKWh = battery.capacityKWh;
 
   // Build date for each hour (starting Jan 1)
   let dayCounter = 0;
@@ -91,7 +92,7 @@ function addHourlyFlowSheet(
     const load = baseCurve[h] ?? 0;
     const net = netLoad[h] ?? load;
     const socVal = soc[h] ?? 0;
-    const socPct = usableKWh > 0 ? (socVal / usableKWh) * 100 : 0;
+    const socPct = nominalKWh > 0 ? (socVal / nominalKWh) * 100 : 0;
 
     const dow = dayCounter % 7;
     const isWeekday = dow < 5;

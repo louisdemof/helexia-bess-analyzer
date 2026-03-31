@@ -3,10 +3,10 @@ import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'rec
 
 interface Props {
   hourlySoC: number[];      // Full SoC series (8760 × years)
-  usableKWh: number;        // Usable capacity for % calculation
+  nominalKWh: number;       // Nominal capacity for % calculation (not usable)
 }
 
-export default function SoCChart({ hourlySoC, usableKWh }: Props) {
+export default function SoCChart({ hourlySoC, nominalKWh }: Props) {
   // Show 30-day sample (720 hours) from a representative month (e.g., hours 2160–2880 = April)
   const startH = 2160;
   const endH = Math.min(startH + 720, hourlySoC.length);
@@ -14,7 +14,7 @@ export default function SoCChart({ hourlySoC, usableKWh }: Props) {
 
   const data = sample.map((soc, i) => ({
     hour: i,
-    socPct: usableKWh > 0 ? (soc / usableKWh) * 100 : 0,
+    socPct: nominalKWh > 0 ? (soc / nominalKWh) * 100 : 0,
   }));
 
   return (

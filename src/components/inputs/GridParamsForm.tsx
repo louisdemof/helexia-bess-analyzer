@@ -14,6 +14,9 @@ interface Props {
 
 const SUBGROUPS: Subgroup[] = ['A1', 'A2', 'A3', 'A3a', 'A4', 'AS'];
 
+// Art. 220 REN 1.000/2021: tensão ≥ 69 kV → mandatory Azul (no Verde option)
+const AZUL_ONLY_SUBGROUPS: Subgroup[] = ['A1', 'A2', 'A3'];
+
 export default function GridParamsForm({ params, onChange, onIcmsChange }: Props) {
   const [fetching, setFetching] = useState(false);
   const [tariffWarnings, setTariffWarnings] = useState<string[]>([]);
@@ -22,6 +25,7 @@ export default function GridParamsForm({ params, onChange, onIcmsChange }: Props
     : false;
 
   const distributors = params.state ? getDistributorsByState(params.state) : [];
+  const isAzulOnly = AZUL_ONLY_SUBGROUPS.includes(params.subgroup);
 
   const handleStateChange = useCallback((state: string) => {
     const dists = getDistributorsByState(state);
@@ -145,7 +149,11 @@ export default function GridParamsForm({ params, onChange, onIcmsChange }: Props
             <label className="mb-1 block text-sm text-[#6692A8]">Subgrupo</label>
             <select
               value={params.subgroup}
-              onChange={(e) => onChange({ subgroup: e.target.value as Subgroup })}
+              onChange={(e) => {
+                const sg = e.target.value as Subgroup;
+                const forceAzul = AZUL_ONLY_SUBGROUPS.includes(sg);
+                onChange({ subgroup: sg, ...(forceAzul && { modalidade: 'azul' }) });
+              }}
               className="w-full rounded-lg border border-[#6692A8] bg-[#1A2332] px-3 py-2 text-white focus:border-[#2F927B] focus:outline-none"
             >
               {SUBGROUPS.map((sg) => (
@@ -161,8 +169,9 @@ export default function GridParamsForm({ params, onChange, onIcmsChange }: Props
               value={params.modalidade}
               onChange={(e) => onChange({ modalidade: e.target.value as Modalidade })}
               className="w-full rounded-lg border border-[#6692A8] bg-[#1A2332] px-3 py-2 text-white focus:border-[#2F927B] focus:outline-none"
+              disabled={isAzulOnly}
             >
-              <option value="verde">Verde</option>
+              {!isAzulOnly && <option value="verde">Verde</option>}
               <option value="azul">Azul</option>
             </select>
           </div>

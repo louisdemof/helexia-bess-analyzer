@@ -118,8 +118,8 @@ export default function Results() {
 
   // Original load curve for chart
   const originalCurve = fullProject ? buildLoadCurve8760(fullProject.loadData, fullProject.gridParams) : [];
-  const usableKWh = fullProject
-    ? fullProject.batteryParams.capacityKWh * (fullProject.batteryParams.degradationTable[0] / 100) * fullProject.batteryParams.dodPct
+  const nominalKWh = fullProject
+    ? fullProject.batteryParams.capacityKWh
     : 0;
 
   return (
@@ -221,7 +221,7 @@ export default function Results() {
 
           {/* Charts row 2 */}
           <div className="grid gap-6 lg:grid-cols-2">
-            <SoCChart hourlySoC={simResult.hourlySoC ?? []} usableKWh={usableKWh} />
+            <SoCChart hourlySoC={simResult.hourlySoC ?? []} nominalKWh={nominalKWh} />
             <EnergyShiftedChart monthlyResults={simResult.monthlyResults} />
           </div>
 

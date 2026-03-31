@@ -2,6 +2,7 @@
 import { useParams, Link } from 'react-router-dom';
 import { useState, useEffect, useCallback } from 'react';
 import { useProjectStore } from '../store/projectStore.ts';
+import { useSimulationStore } from '../store/simulationStore.ts';
 import type { BESSProject, EconomicParams, LoadData, BatteryParams, GridParams, EMSParams, OptLimits, SizingParams } from '../engine/types.ts';
 import EconomicParamsForm from '../components/inputs/EconomicParamsForm.tsx';
 import LoadDataForm from '../components/inputs/LoadDataForm.tsx';
@@ -28,6 +29,7 @@ export default function ProjectEditor() {
   const storeProject = useProjectStore((s) => s.projects.find((p) => p.id === id));
   const updateProject = useProjectStore((s) => s.updateProject);
   const loadProject = useProjectStore((s) => s.loadProject);
+  const clearSimResult = useSimulationStore((s) => s.clearResult);
 
   const [project, setProject] = useState<BESSProject | null>(null);
   const [activeTab, setActiveTab] = useState<TabKey>('economic');
@@ -49,8 +51,10 @@ export default function ProjectEditor() {
   const save = useCallback(async (updated: BESSProject) => {
     setSaving(true);
     await updateProject(updated.id, updated);
+    // Invalidate cached simulation so Results page re-runs with new params
+    clearSimResult(updated.id);
     setSaving(false);
-  }, [updateProject]);
+  }, [updateProject, clearSimResult]);
 
   function updateFields(updater: (prev: BESSProject) => BESSProject) {
     setProject((prev) => {
