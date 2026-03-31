@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { useProjectStore } from '../store/projectStore.ts';
 import { useSimulationStore } from '../store/simulationStore.ts';
 import type { BESSProject, EconomicParams, LoadData, BatteryParams, GridParams, EMSParams, OptLimits, SizingParams } from '../engine/types.ts';
+import { optimizeCapacity, type OptimizerConfig, type OptimizerResult } from '../engine/capacityOptimizer.ts';
 import EconomicParamsForm from '../components/inputs/EconomicParamsForm.tsx';
 import LoadDataForm from '../components/inputs/LoadDataForm.tsx';
 import BatteryParamsForm from '../components/inputs/BatteryParamsForm.tsx';
@@ -34,6 +35,9 @@ export default function ProjectEditor() {
   const [project, setProject] = useState<BESSProject | null>(null);
   const [activeTab, setActiveTab] = useState<TabKey>('economic');
   const [saving, setSaving] = useState(false);
+  const [optimizerResult, setOptimizerResult] = useState<OptimizerResult | null>(null);
+  const [optimizing, setOptimizing] = useState(false);
+  const [optimizerProgress, setOptimizerProgress] = useState(0);
 
   // Load project from IndexedDB on mount
   useEffect(() => {
@@ -95,6 +99,30 @@ export default function ProjectEditor() {
 
   function handleSizingChange(updates: Partial<SizingParams>) {
     updateFields((p) => ({ ...p, sizingParams: { ...p.sizingParams, ...updates } }));
+  }
+
+  async function handleOptimize(config: OptimizerConfig) {
+    if (!project) return;
+    setOptimizing(true);
+    setOptimizerProgress(0);
+    setOptimizerResult(null);
+    await new Promise((r) => setTimeout(r, 50)); // yield to UI
+    try {
+      const result = await optimizeCapacity(
+        project.loadData, project.batteryParams, project.gridParams,
+        project.emsParams, project.optimizationLimits, project.economicParams,
+        project.sizingParams, config, project.id,
+        (pct) => setOptimizerProgress(pct),
+      );
+      setOptimizerResult(result);
+    } finally {
+      setOptimizing(false);
+    }
+  }
+
+  function handleApplyOptimal(capacityKWh: number) {
+    handleBatteryChange({ capacityKWh });
+    handleSizingChange({ bessCapacityKWh: capacityKWh });
   }
 
   // Tab completion indicators
@@ -207,6 +235,11 @@ export default function ProjectEditor() {
             capexPerKWh={project.economicParams.capexPerKWh}
             otherFixedCosts={project.economicParams.otherFixedCosts}
             omPctCapex={project.economicParams.omPctCapex}
+            onOptimize={handleOptimize}
+            onApplyOptimal={handleApplyOptimal}
+            optimizerResult={optimizerResult}
+            optimizing={optimizing}
+            optimizerProgress={optimizerProgress}
           />
         )}
       </div>
