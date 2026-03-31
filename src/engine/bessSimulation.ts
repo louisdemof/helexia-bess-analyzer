@@ -164,8 +164,8 @@ export function runBESSSimulation(
 
       let netLoad = loadH;
       const mode = ems.bessMode || (ems.loadShifting ? 'loadShifting' : ems.peakShaving ? 'peakShaving' : 'loadShifting');
-      // DOD defines the absolute floor; minSoCPct adds an optional buffer above it
-      const minSoC = Math.max(dodFloor, capY * limits.minSoCPct);
+      // DOD defines the SoC floor (e.g. DOD 90% → floor at 10% of capacity)
+      const minSoC = dodFloor;
       const targetSoC = capY * limits.maxSoCPct;
 
       // Peak shaving target: auto = demanda contratada, or manual value
