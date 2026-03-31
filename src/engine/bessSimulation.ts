@@ -146,10 +146,10 @@ export function runBESSSimulation(
     // Use augmentation-adjusted effective capacity (accounts for degradation + augmentation)
     const effectivePct = (augModel.effectiveCapacityPct[y] ?? 73) / 100;
     const capY = battery.capacityKWh * effectivePct;
-    const usableKWh = capY * battery.dodPct;
+    const dodFloor = capY * (1 - battery.dodPct); // DOD-defined minimum SoC
     const rte = battery.roundTripEfficiency;
 
-    let soc = usableKWh * 0.2; // Start at 20% SoC
+    let soc = capY * 0.2; // Start at 20% SoC
 
     // Monthly accumulators for this year
     const monthNetLoadHours: number[][] = Array.from({ length: 12 }, () => []);
@@ -164,8 +164,9 @@ export function runBESSSimulation(
 
       let netLoad = loadH;
       const mode = ems.bessMode || (ems.loadShifting ? 'loadShifting' : ems.peakShaving ? 'peakShaving' : 'loadShifting');
-      const minSoC = usableKWh * limits.minSoCPct;
-      const targetSoC = usableKWh * limits.maxSoCPct;
+      // DOD defines the absolute floor; minSoCPct adds an optional buffer above it
+      const minSoC = Math.max(dodFloor, capY * limits.minSoCPct);
+      const targetSoC = capY * limits.maxSoCPct;
 
       // Peak shaving target: auto = demanda contratada, or manual value
       const psTarget = ems.peakShavingAutoTarget
@@ -283,7 +284,8 @@ export function runBESSSimulation(
       const invAfter = calcMonthlyInvoice(afterLoad, escalatedGrid, econ, y);
 
       const savingsGross = invBefore.totalR - invAfter.totalR;
-      const cyclesMonth = capY > 0 ? monthDischargeKWh[m] / capY : 0;
+      const usableRange = capY * battery.dodPct;
+      const cyclesMonth = usableRange > 0 ? monthDischargeKWh[m] / usableRange : 0;
 
       allMonthlyResults.push({
         month: globalMonth,
@@ -314,9 +316,9 @@ export function runBESSSimulation(
   const energyShiftedYr1MWh = yr1.reduce((s, m) => s + m.energyShiftedKWh, 0) / 1000;
   const totalCyclesYr1 = yr1.reduce((s, m) => s + m.cyclesMonth, 0);
   const yr1SoC = allHourlySoC.slice(0, 8760);
-  const usableYr1 = battery.capacityKWh * (battery.degradationTable[0] / 100) * battery.dodPct;
-  const avgSoCYr1Pct = usableYr1 > 0
-    ? (yr1SoC.reduce((s, v) => s + v, 0) / yr1SoC.length) / usableYr1 * 100
+  const nominalYr1 = battery.capacityKWh * (battery.degradationTable[0] / 100);
+  const avgSoCYr1Pct = nominalYr1 > 0
+    ? (yr1SoC.reduce((s, v) => s + v, 0) / yr1SoC.length) / nominalYr1 * 100
     : 0;
 
   return {

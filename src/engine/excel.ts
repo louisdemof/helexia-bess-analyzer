@@ -5,7 +5,7 @@ import type {
   BESSProject, BESSSimulationResult, EaaSResult,
   BatteryParams,
 } from './types.ts';
-import { buildLoadCurve8760, parseHourMinute, aggregateMonthly } from './loadCurve.ts';
+import { buildLoadCurve8760, parseHourMinute, aggregateMonthly, isPontaHour, buildNoPontaDays } from './loadCurve.ts';
 import { calcMonthlyInvoice, type MonthlyLoadInput } from './invoiceCalc.ts';
 import { calcTotalCapex } from './eaasFinance.ts';
 
@@ -25,8 +25,10 @@ export function exportResultsToExcel(
   const pontaStartH = parseHourMinute(project.gridParams.pontaStart);
   const pontaEndH = parseHourMinute(project.gridParams.pontaEnd);
 
+  const startYear = project.economicParams.startYear || 2026;
+
   // Sheet 1: Fluxo de Potência Horária com BESS
-  addHourlyFlowSheet(wb, baseCurve, simResult, project.batteryParams, pontaStartH, pontaEndH);
+  addHourlyFlowSheet(wb, baseCurve, simResult, project.batteryParams, pontaStartH, pontaEndH, startYear);
 
   // Sheet 2: Conta Energia sem BESS
   addInvoiceSheet(wb, 'Conta Energia sem BESS', baseCurve, project, pontaStartH, pontaEndH, false);
@@ -68,6 +70,7 @@ function addHourlyFlowSheet(
   battery: BatteryParams,
   pontaStartH: number,
   pontaEndH: number,
+  startYear: number,
 ) {
   const headers = [
     'Dia', 'Hora', 'SOC [%]', 'Energia bateria [Wh]',
@@ -82,9 +85,11 @@ function addHourlyFlowSheet(
   // Normalize SoC% against nominal capacity (not usable) so DoD impact is visible
   const nominalKWh = battery.capacityKWh;
 
-  // Build date for each hour (starting Jan 1)
-  let dayCounter = 0;
-  let hourInDay = 0;
+  // Use the same calendar logic as the simulation engine
+  const noPonta = buildNoPontaDays(startYear);
+  const jan1 = new Date(startYear, 0, 1);
+  const jan1Dow = (jan1.getDay() + 6) % 7; // 0=Mon, 6=Sun
+
   let monthIdx = 0;
   let dayInMonth = 1;
 
@@ -94,12 +99,16 @@ function addHourlyFlowSheet(
     const socVal = soc[h] ?? 0;
     const socPct = nominalKWh > 0 ? (socVal / nominalKWh) * 100 : 0;
 
-    const dow = dayCounter % 7;
-    const isWeekday = dow < 5;
-    const isPonta = isWeekday && hourInDay >= pontaStartH && hourInDay < pontaEndH;
+    const dayOfYear = Math.floor(h / 24);
+    const hourInDay = h % 24;
+    const dow = (jan1Dow + dayOfYear) % 7; // 0=Mon, 6=Sun
 
-    const discharged = isPonta ? Math.max(0, load - net) : 0;
-    const charged = !isPonta ? Math.max(0, net - load) : 0;
+    // Use same isPontaHour as simulation (accounts for holidays + weekends)
+    const ponta = isPontaHour(h, pontaStartH, pontaEndH, startYear);
+
+    // Detect charge/discharge from net load vs base load (any hour, not just ponta)
+    const discharged = Math.max(0, load - net);  // battery supplied energy
+    const charged = Math.max(0, net - load);      // battery absorbed energy
 
     const dateStr = `${String(dayInMonth).padStart(2, '0')}/${String(monthIdx + 1).padStart(2, '0')}`;
     const hourStr = `${String(hourInDay).padStart(2, '0')}:00`;
@@ -114,14 +123,11 @@ function addHourlyFlowSheet(
       Math.round(net * 1000),      // W
       Math.round(charged * 1000),  // Wh
       Math.round(discharged * 1000), // Wh
-      isPonta ? 'PONTA' : 'FP',
+      ponta ? 'PONTA' : 'FP',
       dowNames[dow],
     ]);
 
-    hourInDay++;
-    if (hourInDay >= 24) {
-      hourInDay = 0;
-      dayCounter++;
+    if (hourInDay === 23) {
       dayInMonth++;
       if (dayInMonth > DAYS_IN_MONTH[monthIdx]) {
         dayInMonth = 1;
