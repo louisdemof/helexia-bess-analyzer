@@ -218,22 +218,16 @@ export function runBESSSimulation(
             : (canCharge && socDeficit > 0 && htPonta <= ems.chargeWindowHours);
 
         if (shouldCharge) {
-          const chargeNeed = socDeficit;
+          let charge: number;
 
-          // For peak shaving: max charge = target - load (keep grid draw at target)
-          // For load shifting: max charge = demanda contratada × 1.05 - load
-          const demandaLimit = mode === 'peakShaving'
-            ? psTarget
-            : grid.demandaContratadaKW * 1.05;
-          const maxChargeForDemand = Math.max(0, demandaLimit - loadH);
-
-          const hoursAvailable = mode === 'peakShaving' ? 1 : Math.max(htPonta, 1);
-          const charge = Math.min(
-            chargeNeed / hoursAvailable,
-            maxChargePower,
-            socDeficit,
-            maxChargeForDemand,
-          );
+          if (mode === 'peakShaving') {
+            // Peak shaving: limit charge to keep grid draw at target
+            const maxChargeForDemand = Math.max(0, psTarget - loadH);
+            charge = Math.min(socDeficit, maxChargePower, maxChargeForDemand);
+          } else {
+            // Load shifting / combined: charge at max power until full
+            charge = Math.min(socDeficit, maxChargePower);
+          }
           if (charge > 0) {
             soc += charge * rte;
             soc = Math.min(soc, targetSoC);
