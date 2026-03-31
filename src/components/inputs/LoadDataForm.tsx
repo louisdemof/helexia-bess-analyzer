@@ -14,7 +14,7 @@ const MONTHS = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov
 const METHOD_OPTIONS: { value: LoadInputMethod; label: string }[] = [
   { value: 'invoice', label: 'Curva de carga a partir da conta de energia' },
   { value: 'manual',  label: 'Desenvolver curva de carga' },
-  { value: 'profile', label: 'Fazer upload de curva de carga padrão Enersmart' },
+  { value: 'profile', label: 'Fazer upload curva de carga padrão baseada em perfil de carga' },
   { value: 'csv',     label: 'Fazer upload arquivos SCDE-CCEE' },
 ];
 
