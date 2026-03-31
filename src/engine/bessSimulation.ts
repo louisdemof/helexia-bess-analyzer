@@ -221,10 +221,10 @@ export function runBESSSimulation(
           // Charge as aggressively as possible while respecting all constraints:
           // 1. Hardware power limit (C-rate)
           // 2. Don't overfill battery
-          // 3. Don't exceed contracted demand (avoid ultrapassagem)
+          // 3. Don't exceed 105% of contracted demand (Art. 301 REN 1.000/2021: 5% tolerance)
           const demandaLimit = mode === 'peakShaving'
             ? psTarget
-            : grid.demandaContratadaKW;
+            : grid.demandaContratadaKW * 1.05;
           const maxChargeForDemand = Math.max(0, demandaLimit - loadH);
           const charge = Math.min(socDeficit, maxChargePower, maxChargeForDemand);
           if (charge > 0) {
