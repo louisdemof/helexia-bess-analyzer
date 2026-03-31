@@ -218,16 +218,15 @@ export function runBESSSimulation(
             : (canCharge && socDeficit > 0 && htPonta <= ems.chargeWindowHours);
 
         if (shouldCharge) {
-          let charge: number;
-
-          if (mode === 'peakShaving') {
-            // Peak shaving: limit charge to keep grid draw at target
-            const maxChargeForDemand = Math.max(0, psTarget - loadH);
-            charge = Math.min(socDeficit, maxChargePower, maxChargeForDemand);
-          } else {
-            // Load shifting / combined: charge at max power until full
-            charge = Math.min(socDeficit, maxChargePower);
-          }
+          // Charge as aggressively as possible while respecting all constraints:
+          // 1. Hardware power limit (C-rate)
+          // 2. Don't overfill battery
+          // 3. Don't exceed contracted demand (avoid ultrapassagem)
+          const demandaLimit = mode === 'peakShaving'
+            ? psTarget
+            : grid.demandaContratadaKW;
+          const maxChargeForDemand = Math.max(0, demandaLimit - loadH);
+          const charge = Math.min(socDeficit, maxChargePower, maxChargeForDemand);
           if (charge > 0) {
             soc += charge * rte;
             soc = Math.min(soc, targetSoC);
