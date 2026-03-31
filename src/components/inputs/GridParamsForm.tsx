@@ -20,6 +20,7 @@ const AZUL_ONLY_SUBGROUPS: Subgroup[] = ['A1', 'A2', 'A3'];
 export default function GridParamsForm({ params, onChange, onIcmsChange }: Props) {
   const [fetching, setFetching] = useState(false);
   const [tariffWarnings, setTariffWarnings] = useState<string[]>([]);
+  const [tariffInfo, setTariffInfo] = useState<string | null>(null);
   const staleWarning = params.distributorId && params.subgroup
     ? isTariffStale(params.distributorId, params.subgroup)
     : false;
@@ -57,6 +58,7 @@ export default function GridParamsForm({ params, onChange, onIcmsChange }: Props
     if (!params.distributorId || !params.subgroup) return;
     setFetching(true);
     setTariffWarnings([]);
+    setTariffInfo(null);
     // Clear stale cache to force fresh fetch
     clearTariffCache();
     try {
@@ -71,6 +73,12 @@ export default function GridParamsForm({ params, onChange, onIcmsChange }: Props
         azulDemFPRkW: t.azul_TUSD_Dem_FP || params.azulDemFPRkW,
       });
       if (t.warnings.length > 0) setTariffWarnings(t.warnings);
+      // Show tariff date info
+      const vigDate = t.vigencia
+        ? new Date(t.vigencia).toLocaleDateString('pt-BR')
+        : 'desconhecida';
+      const fetchDate = new Date(t.fetchedAt).toLocaleDateString('pt-BR');
+      setTariffInfo(`Vigência: ${vigDate} | Dados obtidos em: ${fetchDate}`);
     } finally {
       setFetching(false);
     }
@@ -235,6 +243,12 @@ export default function GridParamsForm({ params, onChange, onIcmsChange }: Props
         {tariffWarnings.length > 0 && (
           <div className="mb-3 rounded-lg border border-[#f97316]/30 bg-[#f97316]/10 p-2 text-sm text-[#f97316]">
             {tariffWarnings.map((w, i) => <p key={i}>{w}</p>)}
+          </div>
+        )}
+
+        {tariffInfo && (
+          <div className="mb-3 rounded-lg border border-[#2F927B]/30 bg-[#2F927B]/10 p-2 text-sm text-[#2F927B]">
+            {tariffInfo}
           </div>
         )}
 
