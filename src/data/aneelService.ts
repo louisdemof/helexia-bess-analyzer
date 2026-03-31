@@ -55,6 +55,7 @@ const DIRECT_BASE = 'https://dadosabertos.aneel.gov.br/api/3/action';
 // corsproxy.io blocks server-side but works from browser origins
 const CORS_PROXIES = [
   'https://corsproxy.io/?',
+  'https://api.allorigins.win/raw?url=',
 ];
 const CACHE_PREFIX = 'bess-aneel-tariff-';
 const CACHE_MAX_AGE_MS = 24 * 60 * 60 * 1000; // 24 hours
@@ -257,18 +258,11 @@ export async function fetchGrupoATariffs(
 
   const sigAgente = dist.sigAgente;
 
-  // Tier 1: LocalStorage cache
+  // Tier 1: LocalStorage cache (24h TTL)
   const cached = getFromCache(sigAgente, subgroup);
   if (cached) return cached;
 
-  // Tier 1.5: Bundled fallback (fast, works offline and on GitHub Pages)
-  const bundled = loadBundledTariffs(sigAgente, subgroup);
-  if (bundled) {
-    saveToCache(bundled);
-    return bundled;
-  }
-
-  // Tier 2: Live ANEEL API fetch
+  // Tier 2: Live ANEEL API fetch (always try before bundled fallback)
   const sql = buildQuery(sigAgente, subgroup);
   const encodedSql = encodeURIComponent(sql);
 
@@ -298,9 +292,12 @@ export async function fetchGrupoATariffs(
     }
   }
 
-  // Tier 3: Bundled fallback JSON (already tried in 1.5, but retry in case)
-  const fallback = loadBundledTariffs(sigAgente, subgroup);
-  if (fallback) return fallback;
+  // Tier 3: Bundled fallback JSON (live API failed, use pre-built data)
+  const bundled = loadBundledTariffs(sigAgente, subgroup);
+  if (bundled) {
+    saveToCache(bundled);
+    return bundled;
+  }
 
   // All tiers failed
   return {
@@ -344,14 +341,30 @@ export function clearTariffCache(): void {
 export function getCacheAge(distributorId: string, subgroup: string): number | null {
   const dist = getDistributorById(distributorId);
   if (!dist) return null;
-  const cached = getFromCache(dist.sigAgente, subgroup);
-  if (!cached) return null;
-  return Date.now() - new Date(cached.fetchedAt).getTime();
+  // Check localStorage directly (bypass 24h TTL) to get the fetchedAt date
+  try {
+    const key = getCacheKey(dist.sigAgente, subgroup);
+    const raw = localStorage.getItem(key);
+    if (!raw) return null;
+    const cached = JSON.parse(raw) as GrupoATariffs;
+    return Date.now() - new Date(cached.fetchedAt).getTime();
+  } catch {
+    return null;
+  }
 }
 
 /** Returns true if cached tariff is older than 180 days */
 export function isTariffStale(distributorId: string, subgroup: string): boolean {
+  const dist = getDistributorById(distributorId);
+  if (!dist) return false; // Don't show stale warning if distributor not set
+  // Check localStorage first
   const age = getCacheAge(distributorId, subgroup);
-  if (age === null) return true;
-  return age > 180 * 24 * 60 * 60 * 1000;
+  if (age !== null) return age > 180 * 24 * 60 * 60 * 1000;
+  // Check bundled data — if it exists, check its fetchedAt
+  const bundled = loadBundledTariffs(dist.sigAgente, subgroup);
+  if (bundled) {
+    const bundledAge = Date.now() - new Date(bundled.fetchedAt).getTime();
+    return bundledAge > 180 * 24 * 60 * 60 * 1000;
+  }
+  return false; // No data at all — don't show stale warning, user hasn't fetched yet
 }
