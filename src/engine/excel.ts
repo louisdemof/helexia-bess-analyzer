@@ -5,7 +5,7 @@ import type {
   BESSProject, BESSSimulationResult, EaaSResult,
   BatteryParams,
 } from './types.ts';
-import { buildLoadCurve8760, parseHourMinute, aggregateMonthly, isPontaHour, buildNoPontaDays } from './loadCurve.ts';
+import { buildLoadCurve8760, parseHourMinute, aggregateMonthly, isPontaHour } from './loadCurve.ts';
 import { calcMonthlyInvoice, type MonthlyLoadInput } from './invoiceCalc.ts';
 import { calcTotalCapex } from './eaasFinance.ts';
 
@@ -86,7 +86,6 @@ function addHourlyFlowSheet(
   const nominalKWh = battery.capacityKWh;
 
   // Use the same calendar logic as the simulation engine
-  const noPonta = buildNoPontaDays(startYear);
   const jan1 = new Date(startYear, 0, 1);
   const jan1Dow = (jan1.getDay() + 6) % 7; // 0=Mon, 6=Sun
 
