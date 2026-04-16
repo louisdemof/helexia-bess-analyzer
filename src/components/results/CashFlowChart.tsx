@@ -23,7 +23,7 @@ export default function CashFlowChart({ monthlyFeeYr1, econ, battery, sizing, co
   for (let y = 1; y <= contractYears; y++) {
     const revenue = monthlyFeeYr1 * 12 * Math.pow(1 + ipca, y - 1);
     let opex = totalCapex * econ.omPctCapex * Math.pow(1 + ipca, y - 1);
-    opex += totalCapex * econ.sgaPctCapex * Math.pow(1 + ipca, y - 1);
+    opex += revenue * econ.sgaPctCapex; // SG&A as % of annual revenue
     if (econ.emsEnabled) opex += econ.emsCostMonthly * 12 * Math.pow(1 + ipca, y - 1);
     if (econ.assetMgmtEnabled) opex += econ.assetMgmtCostMonthly * 12 * Math.pow(1 + ipca, y - 1);
     if (econ.converterReplacementEnabled && econ.converterReplacementYears > 0 && y % econ.converterReplacementYears === 0) {

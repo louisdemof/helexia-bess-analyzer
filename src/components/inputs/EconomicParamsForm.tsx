@@ -65,7 +65,7 @@ export default function EconomicParamsForm({ params, onChange }: Props) {
       {/* Helexia structure costs */}
       <Section title="Custos Estruturais Helexia">
         <div className="grid grid-cols-2 gap-4 lg:grid-cols-3">
-          <CurrencyInput label="SG&A / Custo estrutura" value={params.sgaPctCapex * 100} onChange={(v) => onChange({ sgaPctCapex: v / 100 })} unit="% Capex a.a." step={0.5} min={0} max={10} />
+          <CurrencyInput label="SG&A / Custo estrutura" value={params.sgaPctCapex * 100} onChange={(v) => onChange({ sgaPctCapex: v / 100 })} unit="% Receita a.a." step={0.5} min={0} max={25} />
         </div>
 
         <div className="mt-4 space-y-3">

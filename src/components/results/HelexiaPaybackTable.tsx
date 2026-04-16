@@ -34,7 +34,8 @@ export default function HelexiaPaybackTable({ sim, econ, battery, sizing }: Prop
 
     // OPEX
     let opex = totalCapex * econ.omPctCapex * Math.pow(1 + ipca, y);
-    opex += totalCapex * econ.sgaPctCapex * Math.pow(1 + ipca, y);
+    // SG&A as % of annual revenue (gross savings used as proxy for revenue in Helexia payback view)
+    opex += grossSavings * econ.sgaPctCapex;
     if (econ.emsEnabled) opex += econ.emsCostMonthly * 12 * Math.pow(1 + ipca, y);
     if (econ.assetMgmtEnabled) opex += econ.assetMgmtCostMonthly * 12 * Math.pow(1 + ipca, y);
 

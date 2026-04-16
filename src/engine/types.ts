@@ -18,7 +18,7 @@ export interface EconomicParams {
   epcPct: number;                   // editable %
   developerCostPct: number;         // editable %
   // SG&A / Structure cost
-  sgaPctCapex: number;              // default 0.05 (5% of CAPEX/year — Helexia structure cost)
+  sgaPctCapex: number;              // default 0.05 (5% of annual revenue — Helexia structure cost)
   // Optional monthly costs (toggles)
   emsEnabled: boolean;              // EMS monthly cost toggle
   emsCostMonthly: number;           // R$/month if enabled

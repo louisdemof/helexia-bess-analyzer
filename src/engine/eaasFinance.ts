@@ -85,8 +85,8 @@ function buildCashFlows(
     // O&M: % of CAPEX, escalated by IPCA
     const om = totalCapex * econ.omPctCapex * Math.pow(1 + ipca, y - 1);
 
-    // SG&A / Structure cost: % of CAPEX, escalated by IPCA
-    const sga = totalCapex * econ.sgaPctCapex * Math.pow(1 + ipca, y - 1);
+    // SG&A / Structure cost: % of annual revenue
+    const sga = revenue * econ.sgaPctCapex;
 
     // EMS cost if enabled (monthly × 12, IPCA-escalated)
     const emsCost = econ.emsEnabled ? econ.emsCostMonthly * 12 * Math.pow(1 + ipca, y - 1) : 0;
@@ -145,7 +145,7 @@ function buildLeveragedCashFlows(
   for (let y = 1; y <= contractYears; y++) {
     const revenue = monthlyFeeYr1 * 12 * Math.pow(1 + ipca, y - 1);
     const om = totalCapex * econ.omPctCapex * Math.pow(1 + ipca, y - 1);
-    const sga = totalCapex * econ.sgaPctCapex * Math.pow(1 + ipca, y - 1);
+    const sga = revenue * econ.sgaPctCapex; // SG&A as % of annual revenue
     const emsCost = econ.emsEnabled ? econ.emsCostMonthly * 12 * Math.pow(1 + ipca, y - 1) : 0;
     const assetMgmtCost = econ.assetMgmtEnabled ? econ.assetMgmtCostMonthly * 12 * Math.pow(1 + ipca, y - 1) : 0;
     let converterCost = 0;
